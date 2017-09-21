@@ -1,0 +1,10 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    font-family: 'Comic Sans MS', sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: blanchedalmond;
+}
