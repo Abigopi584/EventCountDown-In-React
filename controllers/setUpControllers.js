@@ -32,24 +32,28 @@ module.exports = function(app){
         var initialEvents =[
             {
                 username: 'abirami',
-                event: 'Birthday',
-                eventDescription: "balu's Birthday",
-                dateOfEvent: new Date(1982, 5,11),
-                eventReminder: true
-            },
-            {
-                username: 'abirami',
-                event: 'birthday',
-                eventDescription: "Sahkthi's Birthday",
-                dateOfEvent: new Date(2010, 6,30),
-                eventReminder: true
+                event: [{
+                            event: 'Birthday',
+                            eventDescription: "balu's Birthday",
+                            dateOfEvent: new Date(1982, 5,11),
+                            eventReminder: true},
+                        {
+                            event: 'birthday',
+                            eventDescription: "Sahkthi's Birthday",
+                            dateOfEvent: new Date(2010, 6,30),
+                            eventReminder: true
+                          }
+                       ]
             },
             {
                 username: 'bala',
-                event: 'Birthday',
-                eventDescription: "Nethra's Birthday",
-                dateOfEvent: new Date(2016, 6,28),
-                eventReminder: true
+                event: [
+                        {
+                            event: 'Birthday',
+                            eventDescription: "Nethra's Birthday",
+                            dateOfEvent: new Date(2016, 6,28),
+                            eventReminder: true
+                        }]
             }
         ];
         if(eventCountDown.length > 0){
