@@ -1,0 +1,27 @@
+.displayLabel{
+    font-family:"Comic Sans MS" ;
+    font-size: 20px;
+    color: darkslategrey;
+
+}
+.displayFormLabel{
+    font-family:"Comic Sans MS" ;
+    font-size: 17px;
+    color: darkred;
+
+}
+
+.formDisplay{
+    display:inline;
+    text-align: center;
+}
+
+.formGroupDisplay{
+    display:inline;
+    text-align: center;
+}
+.h3Display{
+    font-family: "Comic Sans MS";
+    text-align: center;
+    font-size: 15px;
+}

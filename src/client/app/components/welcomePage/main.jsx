@@ -1,12 +1,19 @@
 import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {logInStatus} from '../../../actions/indexAction.js'
+// Importing child components
 import Header1 from './header/header.jsx';
 import Footer from './footer/footer.jsx'
+import MainEvent from './main/mainEvent.jsx'
 
-export default class Welcome extends React.Component{
-    constructor(){
-        super();
+class Welcome extends React.Component{
+    constructor(props){
+        super(props);
+            this.state= ({
+                isLoggedIn: false
+            })
     }
+
     render(){
         const headerStyle={
             width: "100%",
@@ -20,17 +27,15 @@ export default class Welcome extends React.Component{
             width:"100%",
             height:"20%"
         }
-
         return(
             <div>
                <div className="row" style={headerStyle}>
-                   <Header1 chkLoginStatus={this.loginStatus} />
+                   <Header1 isloggedIn={this.state.isLoggedIn} />
                </div>
                 <div className="row" style={WelcomeStyle} >
-                    <h2> This is the welcome page</h2>
+                    <MainEvent isloggedIn={this.state.isLoggedIn} />
                 </div>
-
-               <div className ="row" style={footerStyle}>
+                <div className ="row" style={footerStyle}>
                    <Footer/>
                </div>
             </div>
@@ -39,3 +44,6 @@ export default class Welcome extends React.Component{
     }
 
 }
+
+
+export default Welcome; /* connect(mapStateToProps)(Welcome)*/;

@@ -1,45 +1,49 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {logInCheckInDB,updateLoginState} from '../../../../actions/indexAction';
 
 
-export default class Login extends React.Component{
+ class Login extends React.Component{
     constructor(props){
         super(props);
         this.loginForm = this.loginForm.bind(this);
         this.state={
-            isLoggedIn: this.props.isloggedInStat,
-            email:'',
-            password:''
+            isLoggedIn:this.props.isloggedInStat,
+            userLoginInfo:{
+                username:'',
+                password:''
+            }
         }
-    }
-    componentDidMount(){
-          console.log('isloggedInStat '+ this.state.isLoggedIn);
     }
 
     loginForm(evt){
+        const {loginInDB,isLoggedInStat } =this.props;
         evt.preventDefault();
         this.setState({
-            email: this.email.value,
-            password:this.password.value
-        })
-        let loginInfo = {
-            email:this.state.email,
-            password:this.state.password
-        }
-        $.ajax({
-            url: '/loginForm',
-            type:'POST',
-            cache: false,
-            dataType: 'json',
-            data: loginInfo,
-        }).done((data) =>{
-            this.setState({
-                isLoggedIn: true
-        });
-
-        }).fail((err) =>{
-            console.log(JSON.stringify(err))
-        });
+            userLoginInfo:{
+                username: this.username.value,
+                password:this.password.value
+            }
+        },this.checkDBForLogin)
     }
+
+     checkDBForLogin(){
+         let logInInfo = this.state.userLoginInfo;
+         this.props.loginInDB(logInInfo);
+         this.updateUsernameinState();
+     }
+
+
+     updateUsernameinState(){
+         this.props.updLoginState(this.state.userLoginInfo);
+     }
+
+     componentWillReceiveProps(nextProps){
+         this.setState({
+             isLoggedIn: nextProps.isLoggedInStat
+         })
+     }
+
 
     render(){
         const formStyle= {
@@ -65,22 +69,36 @@ export default class Login extends React.Component{
             outline:"1px important"
         }
         return(
-        (this.state.isLoggedIn ? (
-            <h2> Welcome {this.state.email }</h2>
+            // there is no need to chk the state of loggedIn here as the whole component is removed wen the state changes
+            (this.state.isLoggedIn ? (
+            <h2> Welcome {this.state.userLoginInfo.username }</h2>
         ):
             (
                 <form className="col-md-12" style= {formStyle} >
-                    <label className="col-md-4 col-md-offset-2" > EMail</label>
-                    <input className="col-md-6" type="text" ref={(input) => this.email = input} />
+                    <label className="col-md-4 col-md-offset-2" > Username</label>
+                    <input className="col-md-6" type="text" ref={(input) => this.username = input} />
                     <br/><br/>
                     <label className="col-md-4 col-md-offset-2"> Password </label>
-                    <input className="col-md-6" type="text" ref={(input) => this.password = input} />
+                    <input className="col-md-6" type="password" ref={(input) => this.password = input} />
                     <br/><br/>
                     <button type="submit" style={submitButton} onClick={this.loginForm} > Submit </button>
                 </form>
             ))
-
-
         )
     }
 }
+
+const mapStateToProps = (state) =>{
+/*     console.log('state from login page '+ JSON.stringify(state) )*/
+     return {
+         isLoggedInStat: state.logInStatus.isLoggedIn
+     }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginInDB : (userLogInInfo) => dispatch(logInCheckInDB(userLogInInfo)),
+        updLoginState: (userLogInInfo) => dispatch(updateLoginState(userLogInInfo))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);
