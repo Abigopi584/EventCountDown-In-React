@@ -21,7 +21,9 @@ module.exports={
     },
     devServer:{
         inline: false,
-        historyApiFallback: true
+        historyApiFallback: true,
+        contentBase:'./',
+        hot:true
     },
     module:{
         loaders: [
@@ -35,13 +37,13 @@ module.exports={
                 loader: "json-loader"
             },
             {
-                test: /\.(?:png|jpg|svg)$/,
-                loader:'url-loader?limit=8192'
-            },
-            {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
-            }
+            },
+             {
+                 test: /\.(jpe?g|png|gif|svg)$/i,
+                 loader: "url-loader?name=/[name].[ext]"
+             },
                 ]
     }
 };
