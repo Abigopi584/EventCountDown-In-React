@@ -1,0 +1,44 @@
+.displayLabel{
+    font-family:"Comic Sans MS" ;
+    font-size: 20px;
+    color: darkslategrey;
+
+}
+.displayFormLabel{
+    font-family:"Comic Sans MS" ;
+    font-size: 17px;
+    color: indianred;
+
+}
+
+.formDisplay{
+    display:inline;
+    text-align: center;
+    position: relative
+}
+
+.formGroupDisplay{
+    display:inline;
+    text-align: center;
+}
+.h3Display{
+    font-family: "Comic Sans MS";
+    text-align: center;
+    font-size: 15px;
+}
+.addMoreEvents{
+    position: relative;
+    left:370px;
+    height: auto;
+    width:auto;
+    padding:12px;
+
+}
+
+.setTimer{
+    font-family:"Comic Sans MS" ;
+    font-size: 17px;
+    color: indianred;
+    position: relative;
+    right:24px;
+}

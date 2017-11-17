@@ -1,0 +1,32 @@
+.submitButton{
+    position:relative;
+    left:20px;
+
+}
+.submitButtonDisabled{
+    position:relative;
+    left:20px;
+    color:darkgrey;
+    background-color:grey
+}
+
+.right {
+    color:blue;
+    font-size:20px;
+    font-weight:200;
+    font-style:italic;
+}
+.wrong {
+    color:red;
+    font-size:20px;
+    font-weight:200;
+    font-style:italic;
+}
+
+.labelLogin{
+     float: left;
+    position: relative;
+    left:37px;
+    color:darkslategrey;
+    font-size:16px;
+}

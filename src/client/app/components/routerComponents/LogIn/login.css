@@ -1,0 +1,25 @@
+
+.label{
+    font-family: Comic Sans MS;
+    font-size: 17px;
+    position: relative;
+    left:37px;
+    color:darkslategrey;
+
+}
+
+.submitButton:hover{
+    background-color: bisque;
+    padding: 7px;
+    font-family: Comic Sans MS;
+    font-size: 20px;
+    position: relative;
+    left: 20px;
+}
+.submitButton{
+    font-family: Comic Sans MS;
+    padding: 4px;
+    font-size: 20px;
+    position: relative;
+    left: 20px;
+}
