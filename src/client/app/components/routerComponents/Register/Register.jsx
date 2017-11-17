@@ -60,7 +60,7 @@ class Register extends Component{
                     password: this.password.value,
                     confirmPassword: this.cPassword.value
                 }
-            }, this.updateUserInfo());
+            }, this.updateUserInfo);
         }
     else {
             this.setState({
