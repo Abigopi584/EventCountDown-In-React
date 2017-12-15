@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import store from '../../configureStore.js';
-import {logInStatus,resetState} from '../../../../actions/indexAction.js';
+import {resetState} from '../../../../actions/indexAction.js';
 
 
 
@@ -14,11 +14,8 @@ class Logout extends React.Component{
     }
 
     componentDidMount(){
-        const Store = store();
-        const isLoggedOutStat = !this.state.isLoggedIn;
-        this.props.updateLogInStat(isLoggedOutStat);
+        this.props.resetState();
         this.props.history.push('/');
-
     }
 
     render(){
@@ -31,7 +28,7 @@ class Logout extends React.Component{
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        updateLogInStat: (updateLogout) => dispatch(logInStatus(updateLogout))
+        resetState: () => dispatch(resetState())
     }
 }
 
