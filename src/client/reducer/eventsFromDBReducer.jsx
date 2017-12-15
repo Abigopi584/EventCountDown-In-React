@@ -1,6 +1,6 @@
 // reducer that updates the events state with the DB data
 
-import {CHK_FOR_EVENTS, ADD_MORE_EVENTS,CHK_FOR_EVENT_IN_DB,RESET_STATE} from '../actions/indexAction.js';
+import {CHK_FOR_EVENTS, ADD_MORE_EVENTS,CHK_FOR_EVENT_IN_DB,RESET} from '../actions/indexAction.js';
 
 const initialState ={
     areThereAnyEvents: '',
@@ -22,6 +22,9 @@ export default function eventInfo(state=initialState, action){
             return Object.assign({},state,{
                 addMoreEvents: action.newEventStatus
             })
+        case RESET:
+            return state;
+            
         case RESET_STATE:
             return module.exports.default()
         default:
