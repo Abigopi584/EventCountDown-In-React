@@ -1,6 +1,6 @@
 // reducer that sets the user login status to true
 
-import { IS_USER_LOGGED_IN,UPDATE_LOGIN_STATE, RESET_STATE} from '../actions/indexAction.js';
+import { IS_USER_LOGGED_IN,UPDATE_LOGIN_STATE, RESET} from '../actions/indexAction.js';
 
 const initialState = {
     isLoggedIn :false,
@@ -24,7 +24,8 @@ export default function logInStatus(state=initialState, action) {
                     password: action.userLoginInfo.password
                 }
             })
-
+        case RESET:
+            return state;
         default:
             return state;
 
