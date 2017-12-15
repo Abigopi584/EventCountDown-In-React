@@ -3,7 +3,7 @@ import {
         REGISTER_NEW_USER_FAILED,
         REGISTER_NEW_USER_REQUEST,
         REGISTER_NEW_USER_IN_DB,
-        RESET_STATE
+        RESET 
 } from '../actions/indexAction.js'
 
 // Initializing the state
@@ -31,6 +31,9 @@ export default function RegisterUserInfo(state = initialState, action){
             return Object.assign({}, state,{
                 userInfo: action.userInfo
             })
+        case RESET:
+            return state;
+                    
         default:
             return state;
     }
