@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Col,ControlLabel,Form, Button,FormControl} from 'react-bootstrap'
-import {updateNewUserInDB,registerUserInfoReq } from '../../../../actions/indexAction.js';
+import {updateNewUserInDB,registerUserInfoReq,registerUserFailed ,resetState} from '../../../../actions/indexAction.js';
 import './register.css'
 
 
@@ -12,18 +12,24 @@ class Register extends Component{
             emptyValues:'',
             rOrw: '',
             match: '',
-            userInfo: '',
-            registerSuccess: false
+            userInfo: {},
+            registerSuccess: false,
+            registerFailed: ''
         })
         this.comparePasswrd = this.comparePasswrd.bind(this);
         this.submitRegisterForm = this.submitRegisterForm.bind(this);
+        this.clearAnyLabels = this.clearAnyLabels.bind(this);
     }
-
 
     componentWillReceiveProps(nextProps){
         this.setState({
-            registerSuccess: nextProps.registerSuccess
+            registerSuccess: nextProps.registerSuccess,
+            registerFailed: nextProps.registerFailed
         })
+    }
+
+    componentDidMount(){
+        this.props.resetState();
     }
 
     comparePasswrd(event){
@@ -67,14 +73,30 @@ class Register extends Component{
                 emptyValues: 'PLease fill the empty fields'
             })
         }
-
-
     }
+
     updateUserInfo(){
         let userInfo = this.state.userInfo;
-        console.log(userInfo);
         this.props.updateNewUserInState(userInfo);
         this.props.updateUserInDB(this.state.userInfo);
+    }
+
+
+    clearAnyLabels(evt){
+        evt.preventDefault();
+        this.username.value='';
+        this.email.value= '';
+        this.password.value='';
+        this.cPassword.value='';
+        this.setState({
+            rOrw: ''
+        })
+        if (this.state.registerFailed !== ''){
+            let registerError = ' ',
+                userInfo={};
+            this.props.updateNewUserInState(userInfo);
+            this.props.registerUserFailed(registerError);
+        }
     }
 
     render(){
@@ -99,12 +121,14 @@ class Register extends Component{
                     <form style={formStyle} >
                         <h3> Register here!! </h3>
                         <br/> <br/>
+                        <ControlLabel> {this.state.registerFailed} </ControlLabel>
                         <ControlLabel> {this.state.emptyValues} </ControlLabel>
+                        <br/><br/>
                         <Col md={5}>
                             <ControlLabel bsClass="labelLogin"> Username </ControlLabel>
                         </Col>
                         <Col md={6}>
-                            <FormControl type="text" inputRef={(input) => this.username = input }  />
+                            <FormControl type="text" inputRef={(input) => this.username = input } onClick={this.clearAnyLabels}  />
                         </Col>
                         <br/><br/>
                         <Col md={5}>
@@ -118,7 +142,10 @@ class Register extends Component{
                             <ControlLabel bsClass="labelLogin"> Password </ControlLabel>
                         </Col>
                         <Col md={6}>
-                            <FormControl type="password" inputRef={(input) => this.password = input }  />
+                            <FormControl type="password"
+                                         minLength={8}
+                                         inputRef={(input) => this.password = input }
+                                            />
                         </Col>
                         <br/><br/>
                         <Col md={5}>
@@ -161,14 +188,17 @@ class Register extends Component{
 
 const mapStateToProps = (state) =>{
     return{
-        registerSuccess: state.RegisterUserInfo.registerSuccess
+        registerSuccess: state.RegisterUserInfo.registerSuccess,
+        registerFailed: state.RegisterUserInfo.registerError
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         updateNewUserInState: (userInfo) => dispatch(registerUserInfoReq(userInfo)),
-        updateUserInDB: (userInfo) => dispatch(updateNewUserInDB(userInfo))
+        updateUserInDB: (userInfo) => dispatch(updateNewUserInDB(userInfo)),
+        resetState: ()=> dispatch(resetState()),
+        registerUserFailed: (registerError)=> dispatch(registerUserFailed(registerError))
     };
 };
 
