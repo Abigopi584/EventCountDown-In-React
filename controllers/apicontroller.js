@@ -28,28 +28,37 @@ module.exports = function(app){
 
     })
     app.post('/login',[bodyParserJSON,urlencoded],(req,res) =>{
-        let loginInfo = req.body;
-        res.send({status:200, loginnfo: loginInfo})
+        let loginUsername = req.body.username,
+            loginPassword = req.body.password;
+            console.log('username '+ loginUsername );
+            console.log('password ' + loginPassword);
+        userInfo.find({$and: [{username: loginUsername}, {password:loginPassword}]},(err,loginInfo) => {
+            if(err){
+                throw err
+            }
+            else if(loginInfo && loginInfo.length){
+                res.status(200).send({message: true});
+            }
+            else {
+                res.status(404).send({message: "Check your username and password"});
+            }
+        })
     })
 
     app.post('/registerUser',[bodyParserJSON,urlencoded], (req,res) =>{
-        console.log('re.body '+ JSON.stringify(req.body));
+
         const username = req.body.username,
               email = req.body.email,
               password = req.body.password;
-
-
-        console.log('req.body.username '+ username);
+        
         // check if username is already so that duplicate userinfo is not created.
 
         userInfo.find({username: username },(err,userInfoDb)=>{
-            console.log('inside db find')
             if(err){
                 throw err;
             }
             else{
                 if(userInfoDb && userInfoDb.length ){
-                    console.log('if userInfo found '+ userInfoDb )
                     res.status(403).send({message: "Duplicate Username"})
                 }
                 else{
@@ -65,7 +74,6 @@ module.exports = function(app){
                             throw err;
                         }
                         else{
-                            console.log('newUserInfo ' + newUserInfo)
                             res.status(200).send({message: "registration success"})
                         }
                     })
@@ -77,39 +85,65 @@ module.exports = function(app){
         /*res.status(400).send({error: "duplicate username "})*/
     })
     app.post('/getEventsFromDB' ,[bodyParserJSON,urlencoded],(req,res)=>{
-        let eventsInfo = req.body.username;
-        /*res.status(404).send({anyEvents: false});*/
-        res.status(200).send({ eventsInfo: [{id: 1,
-                                             event: 'Birthday',
-                                             evtDesc: "Husband's Birthday",
-                                             evtDate:'1982-05-11',
-                                             evtReminder:true
-                                              },{id: 2,
-                                               event: 'Wedding',
-                                                            evtDesc: "Mom and Dad",
-                                                            evtDate:'1983-08-21',
-                                                            evtReminder:true
-                                                             },{id: 3,
-                                                                event: 'Wedding',
-                                                                evtDesc: "Abi and Balu",
-                                                                evtDate:'2018-12-08',
-                                                                evtReminder:true
-                                                            }
-        ]})
+        let username = req.body.username;
+        let eventArr =[]
+        events.find({username: username},(err, eventsInfo)=> {
+            if(err){
+                throw err;
+            }
+            else if(eventsInfo && eventsInfo.length){
+                eventsInfo.forEach((eventInfo ) => {
+                    {
+                        eventInfo.event.forEach((event) => {
+                            console.log('event '+ event)
+                            eventArr.push(event)
+                        })
+                    }
+                })
+
+                res.status(200).send({eventsInfo:eventArr})
+            }
+            else {
+                res.status(404).send({anyEvents: false})
+            }
+        })
     })
 
     app.post('/checkEventsFromDB',[bodyParserJSON,urlencoded],(req,res)=>{
-        res.status(200).send({areThereAnyEvents : true});
+        let username =  req.body.username;
+        events.find({username:username},(err, eventsData) => {
+            if(err){
+                throw err;
+            }
+            else if(eventsData && eventsData.length){
+                res.status(200).send({areThereAnyEvents : true});
+            }
+            else
+                {
+                res.status(404).send({areThereAnyEvents : false});
+            }
+
+        })
+
     })
 
     app.post('/UpdateEventDB',[bodyParserJSON,urlencoded], (req, res)=>{
-        let eventInfo = {
-            id: 4,
-            event: req.body.eventInfo.event,
-            evtDesc: req.body.eventInfo.evtDesc,
-            evtDate:req.body.eventInfo.evtDate,
-            evtReminder:true
-        }
-        res.status(200).send({anyEvents: true })
+        let username = req.body.username,
+            eventInfo= req.body.eventInfo;
+        events.findOneAndUpdate({username : username },{$push: {
+            event:{
+                event: eventInfo.event,
+                eventDescription:  eventInfo.evtDesc,
+                dateOfEvent: eventInfo.dateOfEvt
+            }
+        }},{upsert:true},(err,eventInfo)=> {
+            if(err){
+                throw err
+            }
+            else {
+                res.status(200).send({anyEvents: true })
+            }
+        })
+
     })
 }
