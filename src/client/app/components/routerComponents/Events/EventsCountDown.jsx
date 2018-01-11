@@ -35,6 +35,7 @@ class EventsCountDown extends React.Component{
 
     render(){
         const eventsInfo = this.state.eventsInfo,
+                eventDate = eventsInfo.
              addMoreEvents = this.state.addMoreEvents
         return(
 
@@ -62,19 +63,22 @@ class EventsCountDown extends React.Component{
                 <br/>
 
                 {eventsInfo.map((eventInfo) =>
-                    <Form key={eventInfo.id}  bsClass="formGroupDisplay">
+                    <Form key={eventInfo._id}  bsClass="formGroupDisplay">
                         <FormGroup >
                             <Col md={2}>
                                 <ControlLabel bsClass="displayFormLabel">{eventInfo.event} </ControlLabel>
                             </Col>
                             <Col md={2}>
-                                <ControlLabel bsClass="displayFormLabel">{eventInfo.evtDesc}</ControlLabel>
+                                <ControlLabel bsClass="displayFormLabel">{eventInfo.eventDescription}</ControlLabel>
                             </Col>
                             <Col md={2}>
-                                <ControlLabel bsClass="displayFormLabel">{eventInfo.evtDate}</ControlLabel>
+                                <ControlLabel bsClass="displayFormLabel">{eventInfo.dateOfEvent}</ControlLabel>
                             </Col>
-                            <Col md={3}>
+                            <Col md={2}>
                                 <SetEventCountDown eventDate={eventInfo.evtDate} />
+                            </Col>
+                            <Col md={2}>
+                                <Button> X </Button>
                             </Col>
                             <br/>
                         </FormGroup>
