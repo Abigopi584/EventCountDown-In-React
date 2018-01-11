@@ -5,12 +5,13 @@ var schema = mongoose.Schema;
 
 var eventSchema =  new schema({
     username: String,
-    event: String,
-    eventDescription: String,
-    dateOfEvent: Date,
-    eventReminder: Boolean
+    event:[{
+        event:String,
+        eventDescription: String,
+        dateOfEvent: Date
+    }]
 });
 
-var event = dbConnection.model('EventsCountDown',eventSchema);
+var eventCountDown = dbConnection.model('EventsCountDown',eventSchema);
 
-module.exports = event;
+module.exports = eventCountDown;
